@@ -1,3 +1,5 @@
+# Visualização de Dados - Universidade Federal do Ceará
+
 ## Aula do dia 03/09/2018
 
 [index01.html](basic/index01.html)<br>
@@ -10,6 +12,18 @@
 [index08.html](basic/index08.html)<br>
 [index09.html](basic/index09.html)<br>
 [index10.html](basic/index10.html)<br>
+
+## Aula do dia 05/09/2018
+[01 - Single Select](d3_intro/01_single_select.html)<br>
+[02 - Multi Select](d3_intro/02_multi_select.html)<br>
+[03 - Iterate Select](d3_intro/03_iterate_select.html)<br>
+[04 - Data Array Start](d3_intro/04_data_array_start.html)<br>
+[05 - Data Object Start](d3_intro/05_data_object_start.html)<br>
+[06 - Util Array](d3_intro/06_util_array.html)<br>
+[07 - Load Data](d3_intro/07_load_data.html)<br>
+[08 - Sort Data](d3_intro/08_sort_data.html)<br>
+[Data Array Solution](d3_intro/data_array_solution.html)<br>
+[Data Object Solution](d3_intro/data_object_solution.html)<br>
 
 ---
 
