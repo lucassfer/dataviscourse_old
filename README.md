@@ -27,9 +27,12 @@
 [Exercício: Movies](d3_intro/movies_d3.html)<br>
 
 ## Aula do dia 12/09/2018
-[01 - Scatterplot](/home/lucas/dataviscourse/d3_scale/01_scatterplot.html)<br>
-[02 - Margin Scatter](/home/lucas/dataviscourse/d3_scale/02_margin_scatterplot.html)<br>
-[Exercício: Movies Scatter](/home/lucas/dataviscourse/d3_scale/movies_scatter.html)<br>
+[01 - Scatterplot](d3_scale/01_scatterplot.html)<br>
+[02 - Margin Scatter](d3_scale/02_margin_scatterplot.html)<br>
+[Exercício: Movies Scatter](d3_scale/movies_scatter.html)<br>
+
+## Aula do dia 17/09/2018
+[Scatterplot](d3_update/01_scatterplot.html)
 
 ---
 
