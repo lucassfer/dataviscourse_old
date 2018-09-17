@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Movies</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        function render(data, comparator1, comparator2, comparator3) {
+            var chart1 = d3.select("body")
+                            .append("div")
+                            .attr("id", "chart1");
+
+            var chart2 = d3.select("body")
+                            .append("div")
+                            .attr("id", "chart2");
+
+            var chart3 = d3.select("body")
+                            .append("div")
+                            .attr("id", "chart3");  
+
+            chart1.append("h1")
+                .text("Movies Worldwide Gross Ranking");
+
+            chart1.selectAll("div.h-bar")
+                    .data(data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+                .append("span");
+            
+            chart1.selectAll("div.h-bar")
+                    .data(data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return (d.Worldwide_Gross_M)/3 + "px";
+                })
+                .style("background-color", "blue")
+                .select("span")
+                    .text(function (d) {
+                        return d.Film;
+                    });        
+            if(comparator1)
+                chart1.selectAll("div.h-bar") 
+                    .sort(comparator1);
+            /////
+            chart2.append("h1")
+                .text("Movies Budget Ranking");
+
+            chart2.selectAll("div.h-bar")
+                    .data(data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+                .append("span");
+            
+           chart2.selectAll("div.h-bar")
+                    .data(data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return (d.Budget_M) + "px";
+                })
+                .style("background-color", "red")
+                .select("span")
+                    .text(function (d) {
+                        return d.Film;
+                    });
+            if(comparator2)
+                chart2.selectAll("div.h-bar") 
+                    .sort(comparator2);
+            ///
+            chart3.append("h1")
+                .text("Movies Profit Ranking");
+
+            chart3.selectAll("div.h-bar")
+                    .data(data)
+                .enter().append("div")
+                .attr("class", "h-bar")
+                .append("span");
+            
+           chart3.selectAll("div.h-bar")
+                    .data(data)
+                .attr("class", "h-bar")
+                .style("width", function (d) {
+                    return (d.Worldwide_Gross_M - d.Budget_M)/3 + "px";
+                })
+                .style("background-color", "black")
+                .select("span")
+                    .text(function (d) {
+                        return d.Film;
+                    });
+            if(comparator3)
+                chart3.selectAll("div.h-bar") 
+                    .sort(comparator3);
+        }
+
+        let compareGross = function (a, b) { 
+            return -(a.Worldwide_Gross_M - b.Worldwide_Gross_M);
+        };
+
+        let compareBudget = function (a, b) { 
+            return -(a.Budget_M - b.Budget_M);
+        }; 
+
+        let compareProfit = function (a, b) { 
+            return -((a.Worldwide_Gross_M - a.Budget_M) - (b.Worldwide_Gross_M - b.Budget_M));
+        };             
+
+        d3.json("data/movies.json").then(function(json){ 
+            render(json, compareGross, compareBudget, compareProfit);
+        });
+    </script>
+</body>
+</html>

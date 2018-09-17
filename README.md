@@ -24,6 +24,12 @@
 [08 - Sort Data](d3_intro/08_sort_data.html)<br>
 [Data Array Solution](d3_intro/data_array_solution.html)<br>
 [Data Object Solution](d3_intro/data_object_solution.html)<br>
+[Exercício: Movies](d3_intro/movies_d3.html)<br>
+
+## Aula do dia 12/09/2018
+[01 - Scatterplot](/home/lucas/dataviscourse/d3_scale/01_scatterplot.html)<br>
+[02 - Margin Scatter](/home/lucas/dataviscourse/d3_scale/02_margin_scatterplot.html)<br>
+[Exercício: Movies Scatter](/home/lucas/dataviscourse/d3_scale/movies_scatter.html)<br>
 
 ---
 
