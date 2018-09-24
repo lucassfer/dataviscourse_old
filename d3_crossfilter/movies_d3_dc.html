@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Movies</title>
+    <link rel="stylesheet" href="css/dc.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/crossfilter.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/dc.min.js"></script>
+
+</head>
+<body>
+     <div><h1> Movies Worldwide Gross by Year</h1>
+        <div id="chart"></div>
+    </div>
+    <div><h1> Movies Worldwide Gross by Genre</h1>
+        <div id="chart2"></div>
+    </div>
+    <script type="text/javascript">
+        //let compositeChart = dc.compositeChart('#chart');
+        let barChart = dc.barChart('#chart');
+        let barChart2 = dc.barChart('#chart2');
+
+        d3.json("data/movies.json").then(function(data){
+            //criando um crossfilter
+            let facts = crossfilter(data);
+
+            let parseDate = d3.timeParse("%Y");
+            data.forEach(function(d){
+                d.Year = parseDate(d.Year);
+                d.Genre = +d.Genre;
+                d.Worldwide_Gross_M = +d.Worldwide_Gross_M;
+            });
+
+            let yearDim = facts.dimension(function(d){
+                return d.Year;
+            });
+
+            let genreDim = facts.dimension(function(d){
+                return d.Genre;
+            });
+
+            let grossByYearGroup = yearDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+
+            let grossByGenreGroup = genreDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+
+            let xScale = d3.scaleTime()
+                           .domain([yearDim.bottom(1)[0].Year, yearDim.top(1)[0].Year]);
+
+            barChart.width(1000)
+                     .height(400)
+                     .margins({top: 30, right: 50, bottom: 25, left: 40})
+                    // .dimension(yearDim)
+                    .x(xScale)
+                     .xUnits(d3.timeYears)
+                     .renderHorizontalGridLines(true)
+                     .legend(dc.legend().x(680).y(10).itemHeight(13).gap(5))
+                     .brushOn(false)
+                     .group(grossByYearGroup, 'Worldwide Gross in Millions');
+
+            barChart2.width(1000)
+                     .height(400)
+                     .margins({top: 30, right: 50, bottom: 25, left: 40})
+                     //.dimension(yearDim)
+                    //.x(xScale)
+                    // .xUnits(d3.timeYears)
+                     .renderHorizontalGridLines(true)
+                     .legend(dc.legend().x(680).y(10).itemHeight(13).gap(5))
+                     .brushOn(false)
+                     .group(grossByGenreGroup, 'Worldwide Gross in Millions');
+
+
+            dc.renderAll();
+
+        });
+    </script>           
+</body>
+</html>
