@@ -51,11 +51,14 @@
 
             let xScale = d3.scaleTime()
                            .domain([yearDim.bottom(1)[0].Year, yearDim.top(1)[0].Year]);
+            let xScale2 = d3.scalePoint()
+                            .domain([genreDim.bottom(1)[0].Genre, genreDim.top(1)[0].Genre])
+                            
 
             barChart.width(1000)
                      .height(400)
                      .margins({top: 30, right: 50, bottom: 25, left: 40})
-                    // .dimension(yearDim)
+                     .dimension(yearDim)
                     .x(xScale)
                      .xUnits(d3.timeYears)
                      .renderHorizontalGridLines(true)
@@ -63,11 +66,12 @@
                      .brushOn(false)
                      .group(grossByYearGroup, 'Worldwide Gross in Millions');
 
+           
             barChart2.width(1000)
                      .height(400)
                      .margins({top: 30, right: 50, bottom: 25, left: 40})
-                     //.dimension(yearDim)
-                    //.x(xScale)
+                     .dimension(genreDim)
+                    .x(xScale2)
                     // .xUnits(d3.timeYears)
                      .renderHorizontalGridLines(true)
                      .legend(dc.legend().x(680).y(10).itemHeight(13).gap(5))
