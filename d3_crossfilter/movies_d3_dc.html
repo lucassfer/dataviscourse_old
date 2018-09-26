@@ -11,27 +11,17 @@
 
 </head>
 <body>
-     <div><h1> Movies Worldwide Gross by Year</h1>
-        <div id="chart"></div>
-    </div>
-    <div><h1> Movies Worldwide Gross by Genre</h1>
-        <div id="chart2"></div>
+     <div><h1> Movies Worldwide Gross by Year and by Genre</h1>
+        <div id="yearchart"></div>
+        <div id="genrechart"></div>
     </div>
     <script type="text/javascript">
-        //let compositeChart = dc.compositeChart('#chart');
-        let barChart = dc.barChart('#chart');
-        let barChart2 = dc.barChart('#chart2');
+        var barChart = dc.barChart('#yearchart');
+        var barChart2 = dc.barChart('#genrechart');
 
         d3.json("data/movies.json").then(function(data){
             //criando um crossfilter
             let facts = crossfilter(data);
-
-            let parseDate = d3.timeParse("%Y");
-            data.forEach(function(d){
-                d.Year = parseDate(d.Year);
-                d.Genre = +d.Genre;
-                d.Worldwide_Gross_M = +d.Worldwide_Gross_M;
-            });
 
             let yearDim = facts.dimension(function(d){
                 return d.Year;
@@ -50,34 +40,38 @@
             });
 
             let xScale = d3.scaleTime()
-                           .domain([yearDim.bottom(1)[0].Year, yearDim.top(1)[0].Year]);
-            let xScale2 = d3.scalePoint()
-                            .domain([genreDim.bottom(1)[0].Genre, genreDim.top(1)[0].Genre])
-                            
+                           .domain([yearDim.bottom(1)[0].Year, yearDim.top(1)[0].Year]);                        
 
-            barChart.width(1000)
+
+            barChart.width(600)
                      .height(400)
                      .margins({top: 30, right: 50, bottom: 25, left: 40})
                      .dimension(yearDim)
-                    .x(xScale)
-                     .xUnits(d3.timeYears)
+                    .x(d3.scaleBand())
+                     .xUnits(dc.units.ordinal)
                      .renderHorizontalGridLines(true)
-                     .legend(dc.legend().x(680).y(10).itemHeight(13).gap(5))
+                     .barPadding(0.1)
+		             .outerPadding(0.05)
+                     .legend(dc.legend().x(300).y(10).itemHeight(13).gap(5))
                      .brushOn(false)
                      .group(grossByYearGroup, 'Worldwide Gross in Millions');
 
-           
-            barChart2.width(1000)
-                     .height(400)
-                     .margins({top: 30, right: 50, bottom: 25, left: 40})
-                     .dimension(genreDim)
-                    .x(xScale2)
-                    // .xUnits(d3.timeYears)
-                     .renderHorizontalGridLines(true)
-                     .legend(dc.legend().x(680).y(10).itemHeight(13).gap(5))
-                     .brushOn(false)
-                     .group(grossByGenreGroup, 'Worldwide Gross in Millions');
 
+            barChart2
+		          .width(600)
+		          .height(400)
+		          .margins({top: 30, right: 50, bottom: 25, left: 40})
+		          .x(d3.scaleBand())
+		          .xUnits(dc.units.ordinal)
+		          .renderHorizontalGridLines(true)
+		          .brushOn(false)
+		          .dimension(genreDim)
+		          .barPadding(0.1)
+		          .outerPadding(0.05)
+		          .legend(dc.legend().x(300).y(15).itemHeight(13).gap(5))
+		          .group(grossByGenreGroup, 'Worldwide Gross in Millions');
+
+		          
 
             dc.renderAll();
 

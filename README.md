@@ -32,7 +32,16 @@
 [Exercício: Movies Scatter](d3_scale/movies_scatter.html)<br>
 
 ## Aula do dia 17/09/2018
-[Scatterplot](d3_update/01_scatterplot.html)
+[Scatterplot](d3_update/01_scatterplot.html)<br>
+
+## Aula do dia 24/09/2018
+[01 - index1.html](d3_crossfilter/index1.html)<br>
+[02 - index2.html](d3_crossfilter/index2.html)<br>
+[03 - index3.html](d3_crossfilter/index3.html)<br>
+[03 - index4.html](d3_crossfilter/index4.html)<br>
+[04 - index5.html](d3_crossfilter/index5.html)<br>
+[Exercício 1: Ações](d3_crossfilter/acoes.html)<br>
+[Exercício 2: Movies](d3_crossfilter/movies_d3_dc.html)<br>
 
 ---
 
