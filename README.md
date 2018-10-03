@@ -43,6 +43,9 @@
 [Exercício 1: Ações](d3_crossfilter/acoes.html)<br>
 [Exercício 2: Movies](d3_crossfilter/movies_d3_dc.html)<br>
 
+## Aula do dia 01/10/2018 (EAD)
+[Earthquakes](d3_crossfilter_2/earthquakes.html)<br>
+
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).
