@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+		integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+		crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+		integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+		crossorigin=""></script>	
+		
+    <title> Chicago Crimes</title>
+
+    <!-- Custom styles for this template -->
+	<link rel="stylesheet" href="css/dc.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/crossfilter.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/dc.min.js"></script>
+
+</head>
+<body>
+  <main role="main" class="container">
+  	<h1>Chicago Crime Report</h1>
+    <div class='row'>
+    	<div id='mapid' class="col-6">
+	    </div>
+    </div>
+    <div class='row'>
+    	<div id='bar-chart' class="col-6">
+	      <h4> Number of Crimes by Type </h4>
+	    </div>
+	</div>
+    <div class='row'>
+      <div id='time-chart' class="single-col">
+         <h4> Crimes per day </h4>
+      </div>
+
+	</div>
+  </main>
+  <script type="text/javascript">
+	// Create the dc.js chart objects & link to div
+	barChart = dc.barChart('#bar-chart')
+	timeChart = dc.compositeChart('#time-chart')
+	let map = L.map('mapid').setView([41.750538141,-87.634278086], 9);
+	L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+	attribution: "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.",
+	maxZoom: 17
+	}).addTo(map);
+
+
+	// load data from a csv file
+	d3.csv("data/chicago_crimes_sep_2018.csv").then(function (data) {
+
+	  // format our data
+	  var parseDate = d3.timeParse("%m/%d/%Y %H:%M:%S %p");
+	  
+	  data.forEach(function(d) { 
+	    d.date   = parseDate(d.Date);
+	    d.pt = d.Primary_Type;
+	  });
+
+
+      // Run the data through crossfilter and load our 'facts'	  
+	  let facts = crossfilter(data);
+	  var all = facts.groupAll();
+
+	  var dayDimension = facts.dimension(function(d){
+                return d3.timeDay(d.date);
+        });
+	  var typeDimension = facts.dimension(function(d){
+	  			return d.pt;
+	  });			  
+
+	  var typeGroup = typeDimension.group().reduceCount(function(d){
+                return d.pt;
+            });
+
+	  var dayGroup = dayDimension.group().reduceCount(function(d){
+                return d3.timeDay(d.date);
+            });
+	  var HbyDayGroup = dayDimension.group().reduceSum(function(d){
+                return d.pt=="HOMICIDE";
+            });
+	  var RbyDayGroup = dayDimension.group().reduceSum(function(d){
+                return d.pt=="ROBBERY";
+            });
+	  var BbyDayGroup = dayDimension.group().reduceSum(function(d){
+                return d.pt=="BURGLARY";
+            });
+
+	  let colorScale = d3.scaleOrdinal()
+			.domain(["HOMICIDE", "ROBBERY", "BURGLARY"])
+			.range(["#ca0020", "#0571b0", "#fdae61"]);
+
+	  data.forEach(function(d){
+	  	let circle = L.circle([d.Latitude, d.Longitude], 100, {
+			color: colorScale(d.pt),
+			weight: 2,
+			fillColor: colorScale(d.pt),
+			fillOpacity: 0.5,
+			}).addTo(map);
+	  	circle.bindPopup("Primary Type: " + d.pt + "<br>Date: " + d.date);
+	  });
+	  // Setup the charts
+
+	  barChart.width(600)
+		    .height(400)
+		    .margins({top: 10, right: 10, bottom: 20, left: 40})
+		    .dimension(typeDimension)
+		    .group(typeGroup)
+			.transitionDuration(500)
+		    //.centerBar(true)	
+			.gap(56)  
+		    .x(d3.scaleBand())
+		    .xUnits(dc.units.ordinal)
+			.elasticY(true)
+			.xAxis().tickFormat();	
+
+	  timeChart.width(700)
+		    .height(400)
+		    .margins({top: 10, right: 100, bottom: 20, left: 40})
+		    .dimension(dayDimension)
+		    .group(dayGroup)
+			.transitionDuration(500)
+		    .x(d3.scaleTime().domain(d3.extent(data, function(d) { return d.date; })))
+		    .xUnits(d3.timeDays)
+             .renderHorizontalGridLines(true)
+             .legend(dc.legend().x(600).y(5).itemHeight(13).gap(5))
+             .brushOn(false)    
+             .compose([
+                dc.lineChart(timeChart)
+                          .group(HbyDayGroup, 'HOMICIDE')
+                          .ordinalColors(['#ca0020']),
+                dc.lineChart(timeChart)
+                          .group(RbyDayGroup, 'ROBBERY')
+                          .ordinalColors(['#0571b0']),
+             	dc.lineChart(timeChart)
+                          .group(BbyDayGroup, 'BURGLARY')
+                          .ordinalColors(['#fdae61'])])
+			.elasticY(true)
+			.xAxis().tickFormat();
+
+	  // Render the Charts
+	  dc.renderAll();
+
+	});
+	</script>
+	 <!-- Bootstrap javascript files -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		
+</body>
+</html>

@@ -46,6 +46,9 @@
 ## Aula do dia 01/10/2018 (EAD)
 [Earthquakes](d3_crossfilter_2/earthquakes.html)<br>
 
+## Aula do dia 03/10/2018
+[Earthquakes](d3_crossfilter_2/earthquakes.html)<br>
+[Exercício: Chicago Crimes](d3_crossfilter_2/chicago_crimes.html)<br>
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).
