@@ -49,6 +49,11 @@
 ## Aula do dia 03/10/2018
 [Earthquakes](d3_crossfilter_2/earthquakes.html)<br>
 [Exercício: Chicago Crimes](d3_crossfilter_2/chicago_crimes.html)<br>
+
+## Aula do dia 10/10/2018
+[Exercício: Songs](/d3_networks_trees/songs.html)<br>
+[Exercício: Les Miserables](d3_networks_trees/lesmiserables.html)<br>
+
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).
