@@ -54,6 +54,10 @@
 [Exercício: Songs](/d3_networks_trees/songs.html)<br>
 [Exercício: Les Miserables](d3_networks_trees/lesmiserables.html)<br>
 
+## Aula do dia 22/10/2018
+[Exercício: Taxa de Desemprego nos EUA](/color-d3/usa.html)<br>
+[Exercício: Crimes em Fortaleza](/color-d3/crimes.html)<br>
+
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).
