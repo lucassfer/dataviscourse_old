@@ -58,6 +58,10 @@
 [Exercício: Taxa de Desemprego nos EUA](/color-d3/usa.html)<br>
 [Exercício: Crimes em Fortaleza](/color-d3/crimes.html)<br>
 
+## Aula do dia 31/10/2018
+[Exercício: Taxa de Desemprego nos EUA](d3_interactive/usa.html)<br>
+[Exercício: Earthquakes](d3_interactive/earthquakes.html)<br>
+
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).
