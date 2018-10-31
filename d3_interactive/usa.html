@@ -128,12 +128,13 @@ function showTooltip(county_id, x, y){
     d3.select("#tooltip")
     .style("left", x + "px")
     .style("top", y + "px")
-    .select("#nome")
-    .text(nameById.get(county_id))
     .select("#taxa")
     .text(rateById.get(county_id));
     d3.select("#tooltip")
     .classed("hidden", false);
+    d3.select("#tooltip")
+    .select("#nome")
+    .text(nameById.get(county_id))
 }
 
 function hideTooltip(){
